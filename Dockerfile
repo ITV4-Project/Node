@@ -8,13 +8,14 @@ EXPOSE 443
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 COPY ["NodeWebApi/NodeWebApi.csproj", "NodeWebApi/"]
-RUN dotnet restore "NodeWebApi/NodeWebApi.csproj"
+COPY ["NodeNetworking/NodeNetworking.csproj", "NodeNetworking/"]
+RUN dotnet restore "Node.sln"
 COPY . .
-WORKDIR "/src/NodeWebApi"
-RUN dotnet build "NodeWebApi.csproj" -c Release -o /app/build
+WORKDIR "/src"
+RUN dotnet build "Node.sln" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "NodeWebApi.csproj" -c Release -o /app/publish
+RUN dotnet publish "Node.sln" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
