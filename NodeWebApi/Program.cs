@@ -1,4 +1,5 @@
 using NodeNetworking;
+using NodeNetworking.NodeNetworking.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
