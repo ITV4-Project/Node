@@ -1,9 +1,12 @@
 using NodeNetworking;
 using NodeNetworking.NodeNetworking.DependencyInjection;
+using NodeWebApi.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+builder.Services.AddSingleton<IWalletsRepository, WalletsRepository>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
