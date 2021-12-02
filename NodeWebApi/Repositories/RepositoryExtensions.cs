@@ -10,10 +10,6 @@ public static class RepositoryExtensions
     public static IServiceCollection AddRepositories(
         this IServiceCollection services)
     {
-        services.AddDbContext<NodeContext>(options =>
-        {
-            options.UseSqlite("db.db");
-        });
         services.AddScoped<ITransactionsRepository, TransactionsRepository>();
         services.AddScoped<IWalletsRepository, WalletsRepository>();
 
