@@ -1,18 +1,17 @@
 ﻿using NodeWebApi.Dtos.Wallets;
 using NodeWebApi.Entities;
 
-namespace NodeWebApi.Repositories
+namespace NodeWebApi.Repositories;
+
+public static class Extensions
 {
-    public static class Extensions
+    public static WalletDto AsDto(this Wallet wallet)
     {
-        public static WalletDto AsDto(this Wallet wallet)
+        return new WalletDto
         {
-            return new WalletDto
-            {
-                Id = wallet.Id,
-                CreationDate = wallet.CreationDate,
-                PublicKey = wallet.PublicKey
-            };
-        }
+            Id = wallet.Id,
+            CreationDate = wallet.CreationDate,
+            PublicKey = wallet.PublicKey
+        };
     }
 }
