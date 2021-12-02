@@ -112,7 +112,7 @@ namespace NodeNetworking
         }
 
         private int loopRunning = 0;
-        private async Task StartSending()
+        private async Task StartSendingAsync()
         {
             if (!_client.Connected)
             {
@@ -120,8 +120,7 @@ namespace NodeNetworking
                 await Connect();
             }
 
-            _logger.LogDebug("Starting to send messages to {TargetEndPoint}. {MessageQueueLength} messages in queue.",
-                TargetEndPoint, _messageQueue.Count);
+            _logger.LogDebug($"Starting to send messages to {TargetEndPoint}. {_messageQueue.Count} messages in queue.");
 
             if (Interlocked.Exchange(ref loopRunning, 1) == 1)
             {
@@ -170,6 +169,10 @@ namespace NodeNetworking
                     _logger.LogDebug($"Sending message: {Encoding.UTF8.GetString(bytes)} of length {bytes.Length}");
                     var lengthBytes = BitConverter.GetBytes(bytes.Length);
                     stream.Write(lengthBytes, 0, lengthBytes.Length);
+                    var eventName = msg.Type;
+                    var eventNameBytes = Encoding.UTF8.GetBytes(eventName.ToString());
+                    stream.Write(BitConverter.GetBytes(eventNameBytes.Length));
+                    stream.Write(eventNameBytes, 0, eventNameBytes.Length);
                     stream.Write(bytes, 0, bytes.Length);
                     //await Serializer.SerializeToStream(stream, msg);
                     //await stream.WriteAsync(bytes, 0, bytes.Length);
@@ -182,7 +185,7 @@ namespace NodeNetworking
                     }
                 }
 
-                _logger.LogDebug("Message queue for {TargetEndPoint} empty, switching to state {ClientState}.", TargetEndPoint, ConnectionState.Connected);
+                _logger.LogDebug($"Message queue for {TargetEndPoint} empty, switching to state {ConnectionState.Connected}.");
                 State = ConnectionState.Connected;
                 Interlocked.Exchange(ref loopRunning, 0);
             }
@@ -192,11 +195,6 @@ namespace NodeNetworking
 
             }
         }
-
-        //public void Send<T>(IMessage<T> message)
-        //{
-        //    Send(Serializer.Serialize(message));
-        //}
 
         public async Task Send(Message message)
         {
@@ -209,22 +207,10 @@ namespace NodeNetworking
 
             if (State == ConnectionState.Connected)
             {
-                StartSending();
+                StartSendingAsync();
             }
             //Send(Serializer.Serialize(message));
         }
-
-        //private void Send(byte[] message)
-        //{
-        //    _messageQueue.Enqueue(message);
-        //    lock (_lock)
-        //    {
-        //        if (_state == State.Disconnected)
-        //            StartConnecting();
-        //        else if (_state == State.Connected)
-        //            StartSending();
-        //    }
-        //}
 
         public void Dispose()
         {

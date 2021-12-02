@@ -324,7 +324,7 @@ namespace NodeNetworking
                 var stream = client.GetStream();
                 var arrayPool = ArrayPool<byte>.Shared;
                 var lengthBuffer = new byte[sizeof(int)];
-                async Task<(int, byte[])> ReadBuffer(NetworkStream stream)
+                async Task<(int, byte[], string)> ReadBuffer(NetworkStream stream)
                 {
                     byte[] buffer = null;
                     try
@@ -332,18 +332,32 @@ namespace NodeNetworking
                         var read = await stream.ReadAsync(lengthBuffer, 0, sizeof(int));
                         if (read == 0)
                         {
-                            return (0, null);
+                            return (0, null, null);
                         }
                         
                         var length = BitConverter.ToInt32(lengthBuffer, 0);
+                        read = await stream.ReadAsync(lengthBuffer, 0, sizeof(int));
+
+                        var nameLength = BitConverter.ToInt32(lengthBuffer, 0);
+                        if (read == 0)
+                        {
+                            return (0, null, null);
+                        }
+
+                        buffer = arrayPool.Rent(nameLength);
+                        _ = await stream.ReadAsync(buffer, 0, nameLength);
+                        var eventName = Encoding.UTF8.GetString(buffer, 0, nameLength);
+                        arrayPool.Return(buffer);
+                        buffer = null;
+
                         _logger.LogDebug($"Received message of length {length}");
                         buffer = arrayPool.Rent(length);
                         read = await stream.ReadAsync(buffer, 0, length);
                         if (read == 0)
                         {
-                            return (0, null);
+                            return (0, null, null);
                         }
-                        return (read, buffer);
+                        return (read, buffer, eventName);
                     }
                     catch (Exception e)
                     {
@@ -355,14 +369,14 @@ namespace NodeNetworking
                                 {
                                     arrayPool.Return(buffer);
                                 }
-                                return (0, null);
+                                return (0, null, null);
                             }
                         }
                         _logger.LogError(e, $"Exception while reading data!");
                         if (buffer is not null) {
                             arrayPool.Return(buffer);
                         }
-                        return (0, null);
+                        return (0, null, null);
                     }
                 }
 
@@ -382,7 +396,7 @@ namespace NodeNetworking
                 var clientEndpoint = client.Client.RemoteEndPoint;
                 while (client.Connected)
                 {
-                    var (read, buffer) = await ReadBuffer(stream);
+                    var (read, buffer, eventName) = await ReadBuffer(stream);
                     if (read == 0)
                     {
                         _logger.LogError($"Failed to read from client: {clientEndpoint}");

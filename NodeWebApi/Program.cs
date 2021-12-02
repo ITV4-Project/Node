@@ -1,8 +1,19 @@
+using Microsoft.EntityFrameworkCore;
 using NodeNetworking;
+using NodeNetworking.NodeNetworking.DependencyInjection;
+using NodeWebApi.Entities;
+using NodeWebApi.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+builder.Services.AddDbContext<NodeContext>(options =>
+{
+    options.UseSqlite("db.db");
+});
+
+builder.Services.AddRepositories();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
