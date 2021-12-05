@@ -10,8 +10,8 @@ public static class RepositoryExtensions
     public static IServiceCollection AddRepositories(
         this IServiceCollection services)
     {
-        services.AddScoped<ITransactionsRepository, TransactionsRepository>();
-        services.AddScoped<IWalletsRepository, WalletsRepository>();
+        services.AddSingleton<ITransactionsRepository, TransactionsRepository>();
+        services.AddSingleton<IWalletsRepository, WalletsRepository>();
 
         return services;
     }
