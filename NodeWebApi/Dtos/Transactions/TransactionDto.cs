@@ -1,6 +1,8 @@
 ﻿using NodeWebApi.Entities;
 
-namespace NodeWebApi.Dtos.Transactions
+namespace NodeWebApi.Dtos.Transactions;
+
+public record TransactionDto
 {
     public record TransactionDto
     {

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace NodeNetworking;
+namespace NodeNetworking.NodeNetworking.DependencyInjection;
 
 public class GossipProtocolOptions
 {

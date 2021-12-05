@@ -1,13 +1,12 @@
 ﻿using NodeWebApi.Entities;
 
-namespace NodeWebApi.Repositories.Wallets
+namespace NodeWebApi.Repositories.Wallets;
+
+public interface IWalletsRepository
 {
-    public interface IWalletsRepository
-    {
-        Wallet GetWallet(Guid id);
-        IEnumerable<Wallet> GetWallets();
-        void CreateWallet(Wallet wallet);
-        void UpdateWallet(Wallet wallet);
-        void DeleteWallet(Guid id);
-    }
+    Wallet GetWallet(Guid id);
+    IEnumerable<Wallet> GetWallets();
+    void CreateWallet(Wallet wallet);
+    void UpdateWallet(Wallet wallet);
+    void DeleteWallet(Guid id);
 }

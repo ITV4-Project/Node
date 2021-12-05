@@ -1,10 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace NodeWebApi.Dtos.Wallets
+namespace NodeWebApi.Dtos.Wallets;
+
+public record UpdateWalletDto
 {
-    public record UpdateWalletDto
-    {
-        [Required]
-        public byte[]? PublicKey { get; set; }
-    }
+    [Required]
+    public byte[]? PublicKey { get; set; }
 }

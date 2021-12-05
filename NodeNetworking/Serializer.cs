@@ -13,8 +13,6 @@ namespace NodeNetworking
 {
     public class Serializer
     {
-        private static readonly BinaryFormatter _formatter = new ();
-
         public static readonly JsonSerializerOptions JsonOptions = new(JsonSerializerDefaults.General)
         {
             DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull
@@ -45,24 +43,19 @@ namespace NodeNetworking
             return await JsonSerializer.DeserializeAsync<Message>(stream);
         }
 
+        public static object Deserialize(ReadOnlySpan<byte> data, Type t)
+        {
+            return JsonSerializer.Deserialize(data, t);
+        }
+
         public static Message Deserialize(ReadOnlySpan<byte> data)
         {
             return JsonSerializer.Deserialize<Message>(data);
         }
 
-        public static void SerializeBinary(Stream stream, Message message)
-        {
-            _formatter.Serialize(stream, message);
-        }
-
         public static Message Deserialize(string str)
         {
             return JsonSerializer.Deserialize<Message>(str);
-        }
-
-        public static Message Deserialize(System.IO.Stream stream)
-        {
-            return (Message)_formatter.Deserialize(stream);
         }
     }
 }

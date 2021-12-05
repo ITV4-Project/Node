@@ -1,4 +1,6 @@
-﻿namespace NodeWebApi.Entities
+﻿namespace NodeWebApi.Entities;
+
+public record Transaction
 {
     public record Transaction
     {

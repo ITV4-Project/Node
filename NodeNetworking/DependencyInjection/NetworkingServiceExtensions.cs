@@ -1,30 +1,26 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using NodeNetworking;
+using NodeNetworking.NodeNetworking.DependencyInjection;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace NodeNetworking
+namespace Microsoft.Extensions.DependencyInjection;
+
+public static class NetworkingServiceExtensions
 {
-    public static class NetworkingServiceExtensions
+    public static IServiceCollection AddGossipProtocol(
+        this IServiceCollection services,
+        Action<GossipProtocolOptions> setupAction = null)
     {
-        public static IServiceCollection AddGossipProtocol(
-            this IServiceCollection services,
-            Action<GossipProtocolOptions> setupAction = null)
-        {
-            services.AddHostedService<NetworkingService>();
+        services.AddHostedService<NetworkingService>();
 
-            if (setupAction != null) services.ConfigureGossipProtocol(setupAction);
+        if (setupAction != null) services.ConfigureGossipProtocol(setupAction);
 
-            return services;
-        }
+        return services;
+    }
 
-        public static void ConfigureGossipProtocol(
-            this IServiceCollection services,
-            Action<GossipProtocolOptions> setupAction)
-        {
-            services.Configure(setupAction);
-        }
+    public static void ConfigureGossipProtocol(
+        this IServiceCollection services,
+        Action<GossipProtocolOptions> setupAction)
+    {
+        services.Configure(setupAction);
     }
 }

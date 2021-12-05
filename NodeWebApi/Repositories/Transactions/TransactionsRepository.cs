@@ -1,4 +1,4 @@
-﻿using NodeWebApi.Entities;
+using NodeWebApi.Entities;
 using NodeWebApi.Repositories.Wallets;
 using System.Text;
 
