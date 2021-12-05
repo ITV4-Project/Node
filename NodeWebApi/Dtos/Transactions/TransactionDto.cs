@@ -1,8 +1,6 @@
 ﻿using NodeWebApi.Entities;
 
-namespace NodeWebApi.Dtos.Transactions;
-
-public record TransactionDto
+namespace NodeWebApi.Dtos.Transactions
 {
     public record TransactionDto
     {
@@ -13,5 +11,6 @@ public record TransactionDto
         public Wallet Output { get; set; }
     }
 }
+
 
 

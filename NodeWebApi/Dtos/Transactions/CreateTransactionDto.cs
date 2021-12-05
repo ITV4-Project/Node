@@ -13,3 +13,4 @@ namespace NodeWebApi.Dtos.Transactions
         public Wallet Output { get; set; }
     }
 }
+
