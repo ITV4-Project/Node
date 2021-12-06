@@ -13,7 +13,7 @@ namespace NodeWebApi.Repositories.Transactions
             new Wallet { Id = Guid.NewGuid(), CreationDate = DateTimeOffset.UtcNow, PublicKey = Encoding.ASCII.GetBytes("AWWPWxOBPuyevywU9k0POESTOOCQOE8OAWWPQuYQOESOlz4oFbFAPP9UNy") }
         };
 
-        private readonly List<Transaction> transactions = new()
+        private static readonly List<Transaction> transactions = new()
         {
             new Transaction { Id = Guid.NewGuid(), CreationDate = DateTimeOffset.UtcNow, Input = wallets.ElementAt(0), Amount = 5, Output = wallets.ElementAt(1) },
             new Transaction { Id = Guid.NewGuid(), CreationDate = DateTimeOffset.UtcNow, Input = wallets.ElementAt(1), Amount = 10, Output = wallets.ElementAt(2) },
