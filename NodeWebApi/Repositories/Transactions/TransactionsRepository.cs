@@ -1,5 +1,6 @@
 using NodeWebApi.Entities;
 using NodeWebApi.Repositories.Wallets;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace NodeWebApi.Repositories.Transactions
@@ -15,9 +16,9 @@ namespace NodeWebApi.Repositories.Transactions
 
         private readonly List<Transaction> transactions = new()
         {
-            new Transaction { Id = Guid.NewGuid(), CreationDate = DateTimeOffset.UtcNow, Input = wallets.ElementAt(0), Amount = 5, Output = wallets.ElementAt(1) },
-            new Transaction { Id = Guid.NewGuid(), CreationDate = DateTimeOffset.UtcNow, Input = wallets.ElementAt(1), Amount = 10, Output = wallets.ElementAt(2) },
-            new Transaction { Id = Guid.NewGuid(), CreationDate = DateTimeOffset.UtcNow, Input = wallets.ElementAt(2), Amount = 200, Output = wallets.ElementAt(0) }
+            new Transaction { Id = Guid.NewGuid(), Version = 1, CreationDate = DateTimeOffset.UtcNow, Name = "John Doe", MerkleHash = Encoding.ASCII.GetBytes("IEEXEfWJXcgmdgeC9s0XWMABWWKYWM8WIEEXYcGYWMAWth4wNjNIXX9CVg"), Input = wallets.ElementAt(0).PublicKey, Amount = 5, Output = wallets.ElementAt(1).PublicKey, Delegate = true, Signature = Encoding.ASCII.GetBytes("OKKDKlCPDimsjmkI9y0DCSGHCCQECS8COKKDEiMECSGCzn4cTpTODD9IBm") },
+            new Transaction { Id = Guid.NewGuid(), Version = 1, CreationDate = DateTimeOffset.UtcNow, Name = "Jane Doe", MerkleHash = Encoding.ASCII.GetBytes("MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAxl4aRnRMBB9GZk"), Input = wallets.ElementAt(1).PublicKey, Amount = 10, Output = wallets.ElementAt(2).PublicKey, Delegate = false, Signature = Encoding.ASCII.GetBytes("PLLELmDQEjntknlJ9z0EDTHIDDRFDT8DPLLEFjNFDTHDao4dUqUPEE9JCn") },
+            new Transaction { Id = Guid.NewGuid(), Version = 1, CreationDate = DateTimeOffset.UtcNow, MerkleHash = Encoding.ASCII.GetBytes("NJJCJkBOChlriljH9x0CBRFGBBPDBR8BNJJCDhLDBRFBym4bSoSNCC9HAl"), Input = wallets.ElementAt(2).PublicKey, Amount = 200, Output = wallets.ElementAt(0).PublicKey, Delegate = true, Signature = Encoding.ASCII.GetBytes("QMMFMnERFkoulomK9a0FEUIJEESGEU8EQMMFGkOGEUIEbp4eVrVQFF9KDo") }
         };
 
 

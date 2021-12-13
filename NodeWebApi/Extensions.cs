@@ -21,10 +21,15 @@ namespace NodeWebApi.Repositories
             return new TransactionDto
             {
                 Id = transaction.Id,
+                Version = transaction.Version,
                 CreationDate = transaction.CreationDate,
+                Name = transaction.Name,
+                MerkleHash = transaction.MerkleHash,
                 Input = transaction.Input,
                 Amount = transaction.Amount,
-                Output = transaction.Output
+                Output = transaction.Output,
+                Delegate = transaction.Delegate,
+                Signature = transaction.Signature
             };
         }
     }

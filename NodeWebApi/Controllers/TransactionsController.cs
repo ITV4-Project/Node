@@ -45,11 +45,18 @@ namespace NodeWebApi.Controllers
             Transaction transaction = new()
             {
                 Id = Guid.NewGuid(),
+                Version = transactionDto.Version,
                 CreationDate = DateTimeOffset.UtcNow,
+                Name = transactionDto.Name,
+                MerkleHash = transactionDto.MerkleHash,
                 Input = transactionDto.Input,
                 Amount = transactionDto.Amount,
-                Output = transactionDto.Output
+                Output = transactionDto.Output,
+                Delegate = transactionDto.Delegate,
+                Signature = transactionDto.Signature
             };
+
+            // TODO: Signature check before CreateTransaction
 
             repository.CreateTransaction(transaction);
 
@@ -69,9 +76,14 @@ namespace NodeWebApi.Controllers
 
             Transaction updatedTransaction = existingTransaction with
             {
+                Version = transactionDto.Version,
+                Name = transactionDto.Name,
+                MerkleHash = transactionDto.MerkleHash,
                 Input = transactionDto.Input,
                 Amount = transactionDto.Amount,
-                Output = transactionDto.Output
+                Output = transactionDto.Output,
+                Delegate = transactionDto.Delegate,
+                Signature = transactionDto.Signature
             };
 
             repository.UpdateTransaction(updatedTransaction);
