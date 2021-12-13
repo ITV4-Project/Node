@@ -3,6 +3,7 @@ using NodeWebApi.Dtos.Transactions;
 using NodeWebApi.Entities;
 using NodeWebApi.Repositories;
 using NodeWebApi.Repositories.Transactions;
+using System.Security.Cryptography;
 
 namespace NodeWebApi.Controllers
 {
@@ -56,7 +57,24 @@ namespace NodeWebApi.Controllers
                 Signature = transactionDto.Signature
             };
 
-            // TODO: Signature check before CreateTransaction
+            byte[] data = BitConverter.GetBytes(transaction.Amount).Concat(transaction.Output).ToArray();
+
+            //using (ECDsaCng dsa = new ECDsaCng(CngKey.Create(CngAlgorithm.ECDsaP256)))
+            //{
+            //    dsa.HashAlgorithm = CngAlgorithm.Sha256;
+            //    transaction.Input = dsa.Key.Export(CngKeyBlobFormat.EccPublicBlob);
+            //    transaction.Signature = dsa.SignData(data);
+            //}
+
+
+            using (ECDsaCng ecsdKey = new ECDsaCng(CngKey.Import(transaction.Input, CngKeyBlobFormat.EccPublicBlob)))
+            {
+                Console.Write(this.GetType().Name);
+                if (ecsdKey.VerifyData(data, transaction.Signature))
+                    Console.WriteLine(" data is good");
+                else
+                    Console.WriteLine(" data is bad");
+            }
 
             repository.CreateTransaction(transaction);
 
