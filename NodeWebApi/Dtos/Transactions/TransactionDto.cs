@@ -1,4 +1,4 @@
-﻿using NodeWebApi.Entities;
+﻿using NodeRepository.Entities;
 
 namespace NodeWebApi.Dtos.Transactions
 {

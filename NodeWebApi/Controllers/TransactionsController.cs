@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using NodeRepository.Repositories.Transactions;
 using NodeWebApi.Dtos.Transactions;
-using NodeWebApi.Entities;
-using NodeWebApi.Repositories.Transactions;
+using NodeRepository.Entities;
 
 namespace NodeWebApi.Controllers
 {

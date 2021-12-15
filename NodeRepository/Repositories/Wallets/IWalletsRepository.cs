@@ -1,6 +1,6 @@
-﻿using NodeWebApi.Entities;
+﻿using NodeRepository.Entities;
 
-namespace NodeWebApi.Repositories.Wallets;
+namespace NodeRepository.Repositories.Wallets;
 
 public interface IWalletsRepository
 {

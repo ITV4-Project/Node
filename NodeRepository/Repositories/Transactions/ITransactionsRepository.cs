@@ -1,6 +1,6 @@
-﻿using NodeWebApi.Entities;
+﻿using NodeRepository.Entities;
 
-namespace NodeWebApi.Repositories.Transactions;
+namespace NodeRepository.Repositories.Transactions;
 
 public interface ITransactionsRepository
 {

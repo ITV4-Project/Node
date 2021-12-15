@@ -1,9 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
-using NodeWebApi.Entities;
-using NodeWebApi.Repositories.Transactions;
-using NodeWebApi.Repositories.Wallets;
+﻿using Microsoft.Extensions.DependencyInjection;
+using NodeRepository.Repositories.Transactions;
+using NodeRepository.Repositories.Wallets;
 
-namespace NodeWebApi.Repositories;
+namespace NodeRepository.Repositories;
 
 public static class RepositoryExtensions
 {

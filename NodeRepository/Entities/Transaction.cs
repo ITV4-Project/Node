@@ -1,4 +1,4 @@
-﻿namespace NodeWebApi.Entities;
+﻿namespace NodeRepository.Entities;
 
 public record Transaction
 {
@@ -6,5 +6,5 @@ public record Transaction
     public DateTimeOffset CreationDate { get; init; }
     public Wallet Input { get; set; }
     public int Amount { get; set; }
-    public Wallet Output { get; set;}
+    public Wallet Output { get; set; }
 }
