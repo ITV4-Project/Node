@@ -1,13 +1,13 @@
 using Microsoft.EntityFrameworkCore;
 using NodeNetworking;
+using NodeWebApi.Repositories.Wallets;
+using NodeWebApi.Repositories.Transactions;
 using NodeNetworking.NodeNetworking.DependencyInjection;
 using NodeWebApi.Entities;
-using NodeWebApi.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 builder.Services.AddDbContext<NodeContext>(options =>
 {
     options.UseSqlite("db.db");

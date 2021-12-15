@@ -5,7 +5,14 @@ namespace NodeWebApi.Repositories.Wallets;
 
 public class WalletsRepository : IWalletsRepository
 {
-    private readonly List<Wallet> wallets = new()
+    private readonly NodeContext _nodeContext;
+    public WalletsRepository(
+        NodeContext context)
+    {
+        _nodeContext = context;
+    }
+
+    private static readonly List<Wallet> wallets = new()
     {
         new Wallet { Id = Guid.NewGuid(), CreationDate = DateTimeOffset.UtcNow, PublicKey = Encoding.ASCII.GetBytes("XTTMTuLYMrvbsvtR9h0MLBPQLLZNLB8LXTTMNrVNLBPLiw4lCyCXMM9RKv") },
         new Wallet { Id = Guid.NewGuid(), CreationDate = DateTimeOffset.UtcNow, PublicKey = Encoding.ASCII.GetBytes("SOOHOpGTHmqwnqoM9c0HGWKLGGUIGW8GSOOHImQIGWKGdr4gXtXSHH9MFq") },

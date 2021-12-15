@@ -29,7 +29,7 @@ namespace NodeWebApi.Controllers
         [HttpGet("{id}")]
         public ActionResult<TransactionDto> GetTransaction(Guid id)
         {
-            var transaction = repository.GetTransactions(id);
+            var transaction = repository.GetTransaction(id);
 
             if (transaction == null)
             {
@@ -46,10 +46,12 @@ namespace NodeWebApi.Controllers
             {
                 Id = Guid.NewGuid(),
                 CreationDate = DateTimeOffset.UtcNow,
-                PublicKey = transactionDto.PublicKey
+                Input = transactionDto.Input,
+                Amount = transactionDto.Amount,
+                Output = transactionDto.Output
             };
 
-            repository.CreateTransactions(transaction);
+            repository.CreateTransaction(transaction);
 
             return CreatedAtAction(nameof(GetTransaction), new { id = transaction.Id }, transaction.AsDto());
         }
@@ -67,7 +69,9 @@ namespace NodeWebApi.Controllers
 
             Transaction updatedTransaction = existingTransaction with
             {
-                PublicKey = transactionDto.PublicKey
+                Input = transactionDto.Input,
+                Amount = transactionDto.Amount,
+                Output = transactionDto.Output
             };
 
             repository.UpdateTransaction(updatedTransaction);

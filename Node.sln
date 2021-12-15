@@ -3,24 +3,54 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31912.275
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NodeWebApi", "NodeWebApi\NodeWebApi.csproj", "{7A73311C-D418-4FBB-ADCB-B70A68888F6F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NodeWebApi", "NodeWebApi\NodeWebApi.csproj", "{7A73311C-D418-4FBB-ADCB-B70A68888F6F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NodeNetworking", "NodeNetworking\NodeNetworking.csproj", "{38F5F000-C000-41F1-8B5D-7A67DE29FC3F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
+		Debug|ARM64 = Debug|ARM64
+		New|Any CPU = New|Any CPU
+		New|ARM64 = New|ARM64
 		Release|Any CPU = Release|Any CPU
+		Release|ARM64 = Release|ARM64
+		Test|Any CPU = Test|Any CPU
+		Test|ARM64 = Test|ARM64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{7A73311C-D418-4FBB-ADCB-B70A68888F6F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7A73311C-D418-4FBB-ADCB-B70A68888F6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A73311C-D418-4FBB-ADCB-B70A68888F6F}.Debug|ARM64.ActiveCfg = Debug|Any CPU
+		{7A73311C-D418-4FBB-ADCB-B70A68888F6F}.Debug|ARM64.Build.0 = Debug|Any CPU
+		{7A73311C-D418-4FBB-ADCB-B70A68888F6F}.New|Any CPU.ActiveCfg = Release|Any CPU
+		{7A73311C-D418-4FBB-ADCB-B70A68888F6F}.New|Any CPU.Build.0 = Release|Any CPU
+		{7A73311C-D418-4FBB-ADCB-B70A68888F6F}.New|ARM64.ActiveCfg = Release|Any CPU
+		{7A73311C-D418-4FBB-ADCB-B70A68888F6F}.New|ARM64.Build.0 = Release|Any CPU
 		{7A73311C-D418-4FBB-ADCB-B70A68888F6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7A73311C-D418-4FBB-ADCB-B70A68888F6F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7A73311C-D418-4FBB-ADCB-B70A68888F6F}.Release|ARM64.ActiveCfg = Release|Any CPU
+		{7A73311C-D418-4FBB-ADCB-B70A68888F6F}.Release|ARM64.Build.0 = Release|Any CPU
+		{7A73311C-D418-4FBB-ADCB-B70A68888F6F}.Test|Any CPU.ActiveCfg = Release|Any CPU
+		{7A73311C-D418-4FBB-ADCB-B70A68888F6F}.Test|Any CPU.Build.0 = Release|Any CPU
+		{7A73311C-D418-4FBB-ADCB-B70A68888F6F}.Test|ARM64.ActiveCfg = Release|Any CPU
+		{7A73311C-D418-4FBB-ADCB-B70A68888F6F}.Test|ARM64.Build.0 = Release|Any CPU
 		{38F5F000-C000-41F1-8B5D-7A67DE29FC3F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{38F5F000-C000-41F1-8B5D-7A67DE29FC3F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{38F5F000-C000-41F1-8B5D-7A67DE29FC3F}.Debug|ARM64.ActiveCfg = Debug|Any CPU
+		{38F5F000-C000-41F1-8B5D-7A67DE29FC3F}.Debug|ARM64.Build.0 = Debug|Any CPU
+		{38F5F000-C000-41F1-8B5D-7A67DE29FC3F}.New|Any CPU.ActiveCfg = Release|Any CPU
+		{38F5F000-C000-41F1-8B5D-7A67DE29FC3F}.New|Any CPU.Build.0 = Release|Any CPU
+		{38F5F000-C000-41F1-8B5D-7A67DE29FC3F}.New|ARM64.ActiveCfg = Release|Any CPU
+		{38F5F000-C000-41F1-8B5D-7A67DE29FC3F}.New|ARM64.Build.0 = Release|Any CPU
 		{38F5F000-C000-41F1-8B5D-7A67DE29FC3F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{38F5F000-C000-41F1-8B5D-7A67DE29FC3F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{38F5F000-C000-41F1-8B5D-7A67DE29FC3F}.Release|ARM64.ActiveCfg = Release|Any CPU
+		{38F5F000-C000-41F1-8B5D-7A67DE29FC3F}.Release|ARM64.Build.0 = Release|Any CPU
+		{38F5F000-C000-41F1-8B5D-7A67DE29FC3F}.Test|Any CPU.ActiveCfg = Release|Any CPU
+		{38F5F000-C000-41F1-8B5D-7A67DE29FC3F}.Test|Any CPU.Build.0 = Release|Any CPU
+		{38F5F000-C000-41F1-8B5D-7A67DE29FC3F}.Test|ARM64.ActiveCfg = Release|Any CPU
+		{38F5F000-C000-41F1-8B5D-7A67DE29FC3F}.Test|ARM64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
