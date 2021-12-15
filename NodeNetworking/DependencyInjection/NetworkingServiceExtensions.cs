@@ -1,8 +1,7 @@
-﻿using NodeNetworking;
-using NodeNetworking.NodeNetworking.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using System;
 
-namespace Microsoft.Extensions.DependencyInjection;
+namespace NodeNetworking.DependencyInjection;
 
 public static class NetworkingServiceExtensions
 {

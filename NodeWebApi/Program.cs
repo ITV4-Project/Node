@@ -1,9 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using NodeNetworking;
-using NodeWebApi.Repositories.Wallets;
-using NodeWebApi.Repositories.Transactions;
-using NodeNetworking.NodeNetworking.DependencyInjection;
+using NodeNetworking.DependencyInjection;
 using NodeWebApi.Entities;
+using NodeWebApi.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
