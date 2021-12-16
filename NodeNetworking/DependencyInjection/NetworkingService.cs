@@ -1,12 +1,11 @@
 ﻿using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using NodeNetworking.NodeNetworking.DependencyInjection;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace NodeNetworking
+namespace NodeNetworking.DependencyInjection
 {
     public class NetworkingService : IHostedService
     {

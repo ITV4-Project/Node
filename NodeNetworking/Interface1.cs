@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NodeNetworking.Messages
+namespace NodeNetworking
 {
     public interface IMessage<T>
     {

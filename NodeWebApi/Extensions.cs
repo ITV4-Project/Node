@@ -2,7 +2,7 @@
 using NodeWebApi.Dtos.Wallets;
 using NodeWebApi.Entities;
 
-namespace NodeWebApi.Repositories
+namespace NodeWebApi
 {
     public static class Extensions
     {

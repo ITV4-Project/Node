@@ -3,7 +3,7 @@ using NodeWebApi.Entities;
 using NodeWebApi.Repositories.Transactions;
 using NodeWebApi.Repositories.Wallets;
 
-namespace Microsoft.Extensions.DependencyInjection;
+namespace NodeWebApi.Repositories;
 
 public static class RepositoryExtensions
 {
