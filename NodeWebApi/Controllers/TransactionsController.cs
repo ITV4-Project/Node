@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using NodeRepository.Repositories.Transactions;
 using NodeWebApi.Dtos.Transactions;
 using NodeRepository.Entities;
+using NodeRepository.Repositories.Transactions;
+using NodeWebApi.lib;
 
 namespace NodeWebApi.Controllers
 {
@@ -44,13 +45,28 @@ namespace NodeWebApi.Controllers
             Transaction transaction = new()
             {
                 Id = Guid.NewGuid(),
+                Version = transactionDto.Version,
                 CreationDate = DateTimeOffset.UtcNow,
+                Name = transactionDto.Name,
+                MerkleHash = transactionDto.MerkleHash,
                 Input = transactionDto.Input,
                 Amount = transactionDto.Amount,
-                Output = transactionDto.Output
+                Output = transactionDto.Output,
+                Delegate = transactionDto.Delegate,
+                Signature = transactionDto.Signature
             };
 
-            repository.CreateTransaction(transaction);
+
+            // Opmaak van data benodigd voor het signen
+            byte[] data = repository.SignatureDataConvertToBytes(transaction);
+
+            // Controleren of signature overeenkomt
+            // Public key van verzender wordt gebruikt om te controleren of de data en de signature te verifieren
+            ECDsaKey ecdsKey = new ECDsaKey(transaction.Input, false);
+            if (ecdsKey.Verify(data, transaction.Signature))
+                repository.CreateTransaction(transaction);
+            else
+                return BadRequest();
 
             return CreatedAtAction(nameof(GetTransaction), new { id = transaction.Id }, transaction.AsDto());
         }
@@ -68,9 +84,14 @@ namespace NodeWebApi.Controllers
 
             Transaction updatedTransaction = existingTransaction with
             {
+                Version = transactionDto.Version,
+                Name = transactionDto.Name,
+                MerkleHash = transactionDto.MerkleHash,
                 Input = transactionDto.Input,
                 Amount = transactionDto.Amount,
-                Output = transactionDto.Output
+                Output = transactionDto.Output,
+                Delegate = transactionDto.Delegate,
+                Signature = transactionDto.Signature
             };
 
             repository.UpdateTransaction(updatedTransaction);

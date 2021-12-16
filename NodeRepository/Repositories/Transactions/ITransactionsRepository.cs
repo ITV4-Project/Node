@@ -9,4 +9,5 @@ public interface ITransactionsRepository
     void CreateTransaction(Transaction transaction);
     void UpdateTransaction(Transaction transaction);
     void DeleteTransaction(Guid id);
+    byte[] SignatureDataConvertToBytes(Transaction transaction);
 }
