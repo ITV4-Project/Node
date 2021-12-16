@@ -48,5 +48,23 @@ namespace NodeWebApi.Repositories.Transactions
             var index = transactions.FindIndex(existingTransaction => existingTransaction.Id == id);
             transactions.RemoveAt(index);
         }
+
+        public byte[] SignatureDataConvertToBytes(Transaction transaction)
+        {
+            byte[] vb = BitConverter.GetBytes(transaction.Version);
+            byte[] mhb = transaction.MerkleHash;
+            byte[] ob = transaction.Output;
+            byte[] ab = BitConverter.GetBytes(transaction.Amount);
+            byte[] db = BitConverter.GetBytes(transaction.Delegate);
+
+            if (!BitConverter.IsLittleEndian)
+            {
+                Array.Reverse(vb);
+                Array.Reverse(ab);
+                Array.Reverse(db);
+            }
+
+            return vb.Concat(vb).Concat(mhb).Concat(ob).Concat(ab).Concat(db).ToArray();
+        }
     }
 }

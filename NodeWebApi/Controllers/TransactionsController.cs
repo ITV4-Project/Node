@@ -3,7 +3,7 @@ using NodeWebApi.Dtos.Transactions;
 using NodeWebApi.Entities;
 using NodeWebApi.Repositories;
 using NodeWebApi.Repositories.Transactions;
-using System.Security.Cryptography;
+using NodeWebApi.lib;
 
 namespace NodeWebApi.Controllers
 {
@@ -57,8 +57,13 @@ namespace NodeWebApi.Controllers
                 Signature = transactionDto.Signature
             };
 
-            byte[] data = BitConverter.GetBytes(transaction.Amount).Concat(transaction.Output).ToArray();
 
+            // Opmaak van data benodigd voor het signen
+            // transaction amount en de transaction output worden in 1 byte array gezet; transaction output is de public key van de ontvanger
+            byte[] data = repository.SignatureDataConvertToBytes(transaction);
+
+            //// Sign data
+            //// transaction input is de public key van de verzender
             //using (ECDsaCng dsa = new ECDsaCng(CngKey.Create(CngAlgorithm.ECDsaP256)))
             //{
             //    dsa.HashAlgorithm = CngAlgorithm.Sha256;
@@ -66,17 +71,31 @@ namespace NodeWebApi.Controllers
             //    transaction.Signature = dsa.SignData(data);
             //}
 
+            // Controleren of signature overeenkomt
+            // Public key van verzender wordt gebruikt om te controleren of de data en de signature te verifieren
 
-            using (ECDsaCng ecsdKey = new ECDsaCng(CngKey.Import(transaction.Input, CngKeyBlobFormat.EccPublicBlob)))
+           
+            //using (ECDsaCng ecsdKey = new ECDsaCng(CngKey.Import(transaction.Input, CngKeyBlobFormat.EccPublicBlob)))
+            //{
+            //    Console.Write(this.GetType().Name);
+            //    if (ecsdKey.VerifyData(data, transaction.Signature))
+            //        Console.WriteLine(" data is good");
+            //    else
+            //        Console.WriteLine(" data is bad");
+            //}
+
+            ECDsaKey ecdsKey = new ECDsaKey(transaction.Input, false);
+            Console.Write(this.GetType().Name);
+            if (ecdsKey.Verify(data, transaction.Signature))
             {
-                Console.Write(this.GetType().Name);
-                if (ecsdKey.VerifyData(data, transaction.Signature))
-                    Console.WriteLine(" data is good");
-                else
-                    Console.WriteLine(" data is bad");
+                Console.WriteLine(" data is good");
+                repository.CreateTransaction(transaction);
             }
-
-            repository.CreateTransaction(transaction);
+            else
+            {
+                Console.WriteLine(" data is bad");
+                return BadRequest();
+            }
 
             return CreatedAtAction(nameof(GetTransaction), new { id = transaction.Id }, transaction.AsDto());
         }
