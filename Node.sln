@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NodeWebApi", "NodeWebApi\No
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NodeNetworking", "NodeNetworking\NodeNetworking.csproj", "{38F5F000-C000-41F1-8B5D-7A67DE29FC3F}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "Core\Core\Core.csproj", "{F7D7F0B3-864D-4C1D-AD25-53F6065AD8B4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,22 @@ Global
 		{38F5F000-C000-41F1-8B5D-7A67DE29FC3F}.Test|Any CPU.Build.0 = Release|Any CPU
 		{38F5F000-C000-41F1-8B5D-7A67DE29FC3F}.Test|ARM64.ActiveCfg = Release|Any CPU
 		{38F5F000-C000-41F1-8B5D-7A67DE29FC3F}.Test|ARM64.Build.0 = Release|Any CPU
+		{F7D7F0B3-864D-4C1D-AD25-53F6065AD8B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F7D7F0B3-864D-4C1D-AD25-53F6065AD8B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F7D7F0B3-864D-4C1D-AD25-53F6065AD8B4}.Debug|ARM64.ActiveCfg = Debug|Any CPU
+		{F7D7F0B3-864D-4C1D-AD25-53F6065AD8B4}.Debug|ARM64.Build.0 = Debug|Any CPU
+		{F7D7F0B3-864D-4C1D-AD25-53F6065AD8B4}.New|Any CPU.ActiveCfg = Debug|Any CPU
+		{F7D7F0B3-864D-4C1D-AD25-53F6065AD8B4}.New|Any CPU.Build.0 = Debug|Any CPU
+		{F7D7F0B3-864D-4C1D-AD25-53F6065AD8B4}.New|ARM64.ActiveCfg = Debug|Any CPU
+		{F7D7F0B3-864D-4C1D-AD25-53F6065AD8B4}.New|ARM64.Build.0 = Debug|Any CPU
+		{F7D7F0B3-864D-4C1D-AD25-53F6065AD8B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F7D7F0B3-864D-4C1D-AD25-53F6065AD8B4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F7D7F0B3-864D-4C1D-AD25-53F6065AD8B4}.Release|ARM64.ActiveCfg = Release|Any CPU
+		{F7D7F0B3-864D-4C1D-AD25-53F6065AD8B4}.Release|ARM64.Build.0 = Release|Any CPU
+		{F7D7F0B3-864D-4C1D-AD25-53F6065AD8B4}.Test|Any CPU.ActiveCfg = Debug|Any CPU
+		{F7D7F0B3-864D-4C1D-AD25-53F6065AD8B4}.Test|Any CPU.Build.0 = Debug|Any CPU
+		{F7D7F0B3-864D-4C1D-AD25-53F6065AD8B4}.Test|ARM64.ActiveCfg = Debug|Any CPU
+		{F7D7F0B3-864D-4C1D-AD25-53F6065AD8B4}.Test|ARM64.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -2,7 +2,7 @@
 using NodeWebApi.Dtos.Transactions;
 using NodeWebApi.Entities;
 using NodeWebApi.Repositories.Transactions;
-using NodeWebApi.lib;
+using Core;
 
 namespace NodeWebApi.Controllers
 {
