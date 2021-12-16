@@ -6,11 +6,20 @@ namespace NodeWebApi.Dtos.Transactions
     public class CreateTransactionDto
     {
         [Required]
-        public Wallet Input { get; set; }
+        public int Version { get; init; }
+        public string? Name { get; init; }
         [Required]
-        public int Amount { get; set; }
+        public byte[] MerkleHash { get; init; }
         [Required]
-        public Wallet Output { get; set; }
+        public byte[] Input { get; init; }
+        [Required]
+        public int Amount { get; init; }
+        [Required]
+        public byte[] Output { get; init;}
+        [Required]
+        public bool Delegate { get; init; }
+        [Required]
+        public byte[] Signature { get; init; }
     }
 }
 
