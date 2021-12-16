@@ -1,9 +1,9 @@
-using NodeWebApi.Entities;
-using NodeWebApi.Repositories.Wallets;
+using NodeRepository.Entities;
+using NodeRepository.Repositories.Wallets;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace NodeWebApi.Repositories.Transactions
+namespace NodeRepository.Repositories.Transactions
 {
     public class TransactionsRepository : ITransactionsRepository
     {

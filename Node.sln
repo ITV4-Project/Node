@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NodeWebApi", "NodeWebApi\No
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NodeNetworking", "NodeNetworking\NodeNetworking.csproj", "{38F5F000-C000-41F1-8B5D-7A67DE29FC3F}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NodeRepository", "NodeRepository\NodeRepository.csproj", "{C6218BB7-2488-4848-901D-41EBC28A9B47}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,22 @@ Global
 		{38F5F000-C000-41F1-8B5D-7A67DE29FC3F}.Test|Any CPU.Build.0 = Release|Any CPU
 		{38F5F000-C000-41F1-8B5D-7A67DE29FC3F}.Test|ARM64.ActiveCfg = Release|Any CPU
 		{38F5F000-C000-41F1-8B5D-7A67DE29FC3F}.Test|ARM64.Build.0 = Release|Any CPU
+		{C6218BB7-2488-4848-901D-41EBC28A9B47}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C6218BB7-2488-4848-901D-41EBC28A9B47}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C6218BB7-2488-4848-901D-41EBC28A9B47}.Debug|ARM64.ActiveCfg = Debug|Any CPU
+		{C6218BB7-2488-4848-901D-41EBC28A9B47}.Debug|ARM64.Build.0 = Debug|Any CPU
+		{C6218BB7-2488-4848-901D-41EBC28A9B47}.New|Any CPU.ActiveCfg = Debug|Any CPU
+		{C6218BB7-2488-4848-901D-41EBC28A9B47}.New|Any CPU.Build.0 = Debug|Any CPU
+		{C6218BB7-2488-4848-901D-41EBC28A9B47}.New|ARM64.ActiveCfg = Debug|Any CPU
+		{C6218BB7-2488-4848-901D-41EBC28A9B47}.New|ARM64.Build.0 = Debug|Any CPU
+		{C6218BB7-2488-4848-901D-41EBC28A9B47}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C6218BB7-2488-4848-901D-41EBC28A9B47}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C6218BB7-2488-4848-901D-41EBC28A9B47}.Release|ARM64.ActiveCfg = Release|Any CPU
+		{C6218BB7-2488-4848-901D-41EBC28A9B47}.Release|ARM64.Build.0 = Release|Any CPU
+		{C6218BB7-2488-4848-901D-41EBC28A9B47}.Test|Any CPU.ActiveCfg = Debug|Any CPU
+		{C6218BB7-2488-4848-901D-41EBC28A9B47}.Test|Any CPU.Build.0 = Debug|Any CPU
+		{C6218BB7-2488-4848-901D-41EBC28A9B47}.Test|ARM64.ActiveCfg = Debug|Any CPU
+		{C6218BB7-2488-4848-901D-41EBC28A9B47}.Test|ARM64.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

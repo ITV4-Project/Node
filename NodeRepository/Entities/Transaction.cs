@@ -1,4 +1,4 @@
-﻿namespace NodeWebApi.Entities;
+﻿namespace NodeRepository.Entities;
 
 public record Transaction
 {

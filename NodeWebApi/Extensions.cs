@@ -1,6 +1,6 @@
 ﻿using NodeWebApi.Dtos.Transactions;
 using NodeWebApi.Dtos.Wallets;
-using NodeWebApi.Entities;
+using NodeRepository.Entities;
 
 namespace NodeWebApi
 {

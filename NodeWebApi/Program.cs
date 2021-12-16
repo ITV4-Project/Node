@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using NodeNetworking.DependencyInjection;
-using NodeWebApi.Entities;
-using NodeWebApi.Repositories;
+using NodeRepository.Entities;
+using NodeRepository.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 

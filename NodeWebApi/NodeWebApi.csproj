@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\NodeNetworking\NodeNetworking.csproj" />
+    <ProjectReference Include="..\NodeRepository\NodeRepository.csproj" />
   </ItemGroup>
 
 </Project>

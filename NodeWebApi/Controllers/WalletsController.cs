@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using NodeWebApi.Dtos.Wallets;
-using NodeWebApi.Entities;
-using NodeWebApi.Repositories.Wallets;
+using NodeRepository.Entities;
+using NodeRepository.Repositories.Wallets;
 
 namespace NodeWebApi.Controllers
 {
