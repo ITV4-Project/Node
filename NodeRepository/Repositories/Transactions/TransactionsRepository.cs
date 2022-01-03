@@ -1,24 +1,58 @@
 using NodeRepository.Entities;
-using NodeRepository.Repositories.Wallets;
-using System.Security.Cryptography;
 using System.Text;
+using Core;
 
 namespace NodeRepository.Repositories.Transactions
 {
     public class TransactionsRepository : ITransactionsRepository
     {
-        private static readonly List<Wallet> wallets = new()
+
+        private static readonly List<ECDsaKey> keys = new()
         {
-            new Wallet { Id = Guid.NewGuid(), CreationDate = DateTimeOffset.UtcNow, PublicKey = Encoding.ASCII.GetBytes("XTTMTuLYMrvbsvtR9h0MLBPQLLZNLB8LXTTMNrVNLBPLiw4lCyCXMM9RKv") },
-            new Wallet { Id = Guid.NewGuid(), CreationDate = DateTimeOffset.UtcNow, PublicKey = Encoding.ASCII.GetBytes("SOOHOpGTHmqwnqoM9c0HGWKLGGUIGW8GSOOHImQIGWKGdr4gXtXSHH9MFq") },
-            new Wallet { Id = Guid.NewGuid(), CreationDate = DateTimeOffset.UtcNow, PublicKey = Encoding.ASCII.GetBytes("AWWPWxOBPuyevywU9k0POESTOOCQOE8OAWWPQuYQOESOlz4oFbFAPP9UNy") }
+            new ECDsaKey { },
+            new ECDsaKey { },
+            new ECDsaKey { }
         };
 
         private static readonly List<Transaction> transactions = new()
         {
-            new Transaction { Id = Guid.NewGuid(), Version = 1, CreationDate = DateTimeOffset.UtcNow, Name = "John Doe", MerkleHash = Encoding.ASCII.GetBytes("IEEXEfWJXcgmdgeC9s0XWMABWWKYWM8WIEEXYcGYWMAWth4wNjNIXX9CVg"), Input = wallets.ElementAt(0).PublicKey, Amount = 5, Output = wallets.ElementAt(1).PublicKey, Delegate = true, Signature = Encoding.ASCII.GetBytes("OKKDKlCPDimsjmkI9y0DCSGHCCQECS8COKKDEiMECSGCzn4cTpTODD9IBm") },
-            new Transaction { Id = Guid.NewGuid(), Version = 1, CreationDate = DateTimeOffset.UtcNow, Name = "Jane Doe", MerkleHash = Encoding.ASCII.GetBytes("MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAxl4aRnRMBB9GZk"), Input = wallets.ElementAt(1).PublicKey, Amount = 10, Output = wallets.ElementAt(2).PublicKey, Delegate = false, Signature = Encoding.ASCII.GetBytes("PLLELmDQEjntknlJ9z0EDTHIDDRFDT8DPLLEFjNFDTHDao4dUqUPEE9JCn") },
-            new Transaction { Id = Guid.NewGuid(), Version = 1, CreationDate = DateTimeOffset.UtcNow, MerkleHash = Encoding.ASCII.GetBytes("NJJCJkBOChlriljH9x0CBRFGBBPDBR8BNJJCDhLDBRFBym4bSoSNCC9HAl"), Input = wallets.ElementAt(2).PublicKey, Amount = 200, Output = wallets.ElementAt(0).PublicKey, Delegate = true, Signature = Encoding.ASCII.GetBytes("QMMFMnERFkoulomK9a0FEUIJEESGEU8EQMMFGkOGEUIEbp4eVrVQFF9KDo") }
+            new Transaction
+            { 
+                Id = Guid.NewGuid(), 
+                Version = 1, 
+                CreationDate = DateTimeOffset.UtcNow, 
+                Name = "John Doe", 
+                MerkleHash = Encoding.ASCII.GetBytes("TUlJQklqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FROEFNSUlCQ2dLQ0FRRUF4bDRhUm5STUJCOUdaaw=="), 
+                Input = keys.ElementAt(0).GetPublicKeyBytes(), 
+                Amount = 5, 
+                Output = keys.ElementAt(1).GetPublicKeyBytes(), 
+                Delegate = true, 
+                Signature = Encoding.ASCII.GetBytes("t4or5p62SBIIvb6hKNxl/6pXt+7wsRwLQTUeq0O1Unmzu6XGWo+oI8g7QAECFY2DxkVlfmYus9Rc79MgV9XvGg==")
+            },
+            new Transaction 
+            { 
+                Id = Guid.NewGuid(), 
+                Version = 1, 
+                CreationDate = DateTimeOffset.UtcNow, 
+                Name = "Jane Doe", 
+                MerkleHash = Encoding.ASCII.GetBytes("h+7pHz6TFIP9Qw4zLMnrXOLjFyhYnQDd1KkFyW84XpxMHqbAH4Qv7CQTrGDKN1Xf5vO4ZeBu1iyrpAgKuZP6bQ=="), 
+                Input = keys.ElementAt(1).GetPublicKeyBytes(), 
+                Amount = 10, 
+                Output = keys.ElementAt(2).GetPublicKeyBytes(), 
+                Delegate = false, 
+                Signature = Encoding.ASCII.GetBytes("TUlJQklqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FROEFNSUlCQ2dLQ0FRRUF4bDRhUm5STUJCOUdaaw==")
+            },
+            new Transaction 
+            { 
+                Id = Guid.NewGuid(), 
+                Version = 1, 
+                CreationDate = DateTimeOffset.UtcNow, 
+                MerkleHash = Encoding.ASCII.GetBytes("t4or5p62SBIIvb6hKNxl/6pXt+7wsRwLQTUeq0O1Unmzu6XGWo+oI8g7QAECFY2DxkVlfmYus9Rc79MgV9XvGg=="), 
+                Input = keys.ElementAt(2).GetPublicKeyBytes(), 
+                Amount = 200, 
+                Output = keys.ElementAt(0).GetPublicKeyBytes(), 
+                Delegate = true, 
+                Signature = Encoding.ASCII.GetBytes("h+7pHz6TFIP9Qw4zLMnrXOLjFyhYnQDd1KkFyW84XpxMHqbAH4Qv7CQTrGDKN1Xf5vO4ZeBu1iyrpAgKuZP6bQ==") }
         };
 
 
@@ -32,21 +66,50 @@ namespace NodeRepository.Repositories.Transactions
             return transactions.Where(transaction => transaction.Id == id).SingleOrDefault();
         }
 
-        void ITransactionsRepository.CreateTransaction(Transaction transaction)
+        public void CreateTransaction(Transaction transaction)
         {
             transactions.Add(transaction);
         }
 
-        void ITransactionsRepository.UpdateTransaction(Transaction transaction)
+        public void UpdateTransaction(Transaction transaction)
         {
             var index = transactions.FindIndex(existingTransaction => existingTransaction.Id == transaction.Id);
             transactions[index] = transaction;
         }
 
-        void ITransactionsRepository.DeleteTransaction(Guid id)
+        public void DeleteTransaction(Guid id)
         {
             var index = transactions.FindIndex(existingTransaction => existingTransaction.Id == id);
             transactions.RemoveAt(index);
+        }
+
+        public Transaction GetTransactionTesting()
+        {
+            ECDsaKey key = new ECDsaKey();
+            Transaction transactionToSign = new Transaction
+            {
+                Version = 1,
+                MerkleHash = Encoding.ASCII.GetBytes("t4or5p62SBIIvb6hKNxl/6pXt+7wsRwLQTUeq0O1Unmzu6XGWo+oI8g7QAECFY2DxkVlfmYus9Rc79MgV9XvGg=="),
+                Output = keys.ElementAt(1).GetPublicKeyBytes(),
+                Amount = 200,
+                Delegate = false
+            };
+
+            Transaction transaction = new Transaction
+            {
+                Id = Guid.NewGuid(),
+                Version = 1,
+                CreationDate = DateTimeOffset.UtcNow,
+                Name = "Testing",
+                MerkleHash = Encoding.ASCII.GetBytes("t4or5p62SBIIvb6hKNxl/6pXt+7wsRwLQTUeq0O1Unmzu6XGWo+oI8g7QAECFY2DxkVlfmYus9Rc79MgV9XvGg=="),
+                Input = key.GetPublicKeyBytes(),
+                Amount = 200,
+                Output = keys.ElementAt(1).GetPublicKeyBytes(),
+                Delegate = false,
+                Signature = key.Sign(SignatureDataConvertToBytes(transactionToSign))
+            };
+
+            return transaction;
         }
 
         public byte[] SignatureDataConvertToBytes(Transaction transaction)
