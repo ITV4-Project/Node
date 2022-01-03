@@ -2,7 +2,7 @@
 using NodeWebApi.Dtos.Transactions;
 using NodeRepository.Entities;
 using NodeRepository.Repositories.Transactions;
-using NodeWebApi.lib;
+using Core;
 
 namespace NodeWebApi.Controllers
 {
@@ -66,7 +66,7 @@ namespace NodeWebApi.Controllers
             if (ecdsKey.Verify(data, transaction.Signature))
                 repository.CreateTransaction(transaction);
             else
-                return BadRequest();
+                return Conflict("Signature invalid.");
 
             return CreatedAtAction(nameof(GetTransaction), new { id = transaction.Id }, transaction.AsDto());
         }
@@ -113,6 +113,13 @@ namespace NodeWebApi.Controllers
             repository.DeleteTransaction(id);
 
             return NoContent();
+        }
+
+        // GET /transactions/test
+        [HttpGet("test")]
+        public ActionResult<TransactionDto> GetTransactionTesting()
+        {
+            return repository.GetTransactionTesting().AsDto();
         }
     }
 }
