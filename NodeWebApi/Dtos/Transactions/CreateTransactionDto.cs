@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace NodeWebApi.Dtos.Transactions
 {
-    public class CreateTransactionDto
+    public record CreateTransactionDto
     {
         [Required]
         public int Version { get; init; }
