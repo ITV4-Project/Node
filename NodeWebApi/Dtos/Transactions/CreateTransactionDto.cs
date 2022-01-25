@@ -7,7 +7,8 @@ namespace NodeWebApi.Dtos.Transactions
     {
         [Required]
         public int Version { get; init; }
-        public string? Name { get; init; }
+        [Required]
+        public DateTimeOffset CreationTime { get; init; }
         [Required]
         public byte[] MerkleHash { get; init; }
         [Required]
@@ -17,7 +18,7 @@ namespace NodeWebApi.Dtos.Transactions
         [Required]
         public byte[] Output { get; init;}
         [Required]
-        public bool Delegate { get; init; }
+        public bool IsDelegating { get; init; }
         [Required]
         public byte[] Signature { get; init; }
     }
