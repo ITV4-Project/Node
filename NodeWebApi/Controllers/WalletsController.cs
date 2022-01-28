@@ -44,7 +44,7 @@ namespace NodeWebApi.Controllers
             Wallet wallet = new()
             {
                 Id = Guid.NewGuid(),
-                CreationDate = DateTimeOffset.UtcNow,
+                CreationTime = DateTimeOffset.UtcNow,
                 PublicKey = walletDto.PublicKey
             };
 
