@@ -1,8 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Core;
+using Microsoft.AspNetCore.Mvc;
 using NodeWebApi.Dtos.Transactions;
-using NodeRepository.Entities;
 using NodeRepository.Repositories.Transactions;
-using Core;
+
 
 namespace NodeWebApi.Controllers
 {
@@ -43,15 +43,15 @@ namespace NodeWebApi.Controllers
         public ActionResult<TransactionDto> CreateTransaction(CreateTransactionDto transactionDto)
         {
             Transaction transaction = new(
-                Guid.NewGuid(), 
-                transactionDto.Version,
-                transactionDto.CreationTime, 
-                transactionDto.MerkleHash, 
-                transactionDto.Input, 
-                transactionDto.Output, 
-                transactionDto.Amount, 
-                transactionDto.IsDelegating, 
-                transactionDto.Signature
+                id: Guid.NewGuid(), 
+                version: transactionDto.Version,
+                creationTime: transactionDto.CreationTime, 
+                merkleHash: transactionDto.MerkleHash, 
+                input: transactionDto.Input, 
+                output: transactionDto.Output,
+                amount: transactionDto.Amount, 
+                isDelegating: transactionDto.IsDelegating, 
+                signature: transactionDto.Signature
                 );
 
             //// Opmaak van data benodigd voor het signen
@@ -100,7 +100,7 @@ namespace NodeWebApi.Controllers
 
         //GET /balance/{publicKeyHex}
         [HttpGet("/Balance/{publicKeyHex}")]
-        public ActionResult<int> GetBalance(string publicKeyHex)
+        public ActionResult<long> GetBalance(string publicKeyHex)
         {
             byte[] publicKey = Convert.FromHexString(publicKeyHex);
             var transactions = repository.GetTransactions(publicKey);
@@ -110,7 +110,7 @@ namespace NodeWebApi.Controllers
                 return NotFound();
             }
 
-            int balance = 0;
+            long balance = 0;
 
             var outgoing = transactions.Where(transaction => transaction.Input == publicKey);
 
