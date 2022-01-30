@@ -1,4 +1,5 @@
 ﻿using Core;
+using Core.Database;
 using NodeNetworking.Data;
 using System;
 using System.Collections.Generic;
@@ -61,7 +62,7 @@ namespace NodeNetworking
                 else
                 {
                     // Replaces node with the least amount of votes with a node which has more votes
-                    int minVotes = candidates.Min(n => n.Votes);
+                    long minVotes = candidates.Min(n => n.Votes);
                     if (node.Votes > minVotes)
                     {
                         List<Node> minDelegates = candidates.Where(n => n.Votes == minVotes).ToList();
@@ -88,9 +89,9 @@ namespace NodeNetworking
         private bool isVerifiedBlock(Node blockValidator, HashSet<Node> roundValidators)
         {
             int votes = 0;
-            foreach (Node n in roundDelegates)
+            foreach (Node n in roundValidators)
             {
-                // if node contains List:blockvalidator.block.transactions
+                // if node contains List:blockValidator.block.transactions
                 {
                     votes++;
                 }
