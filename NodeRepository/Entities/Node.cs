@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NodeNetworking
+namespace NodeRepository.Entities;
 {
     public record Node
     {
