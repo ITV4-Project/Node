@@ -5,8 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NodeRepository.Entities;
-{
+namespace NodeNetworking.Data {
     public record Node
     {
         public Node(long votes = 0)

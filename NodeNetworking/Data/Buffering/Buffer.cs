@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NodeNetworking.Buffering {
+namespace NodeNetworking.Data.Buffering {
 	internal class Buffer<T> : IBuffer<T> {
 		private List<T> _buffer;
 

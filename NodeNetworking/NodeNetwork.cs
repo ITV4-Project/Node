@@ -1,5 +1,5 @@
 ﻿using Core;
-using NodeRepository.Entities.Node;
+using NodeNetworking.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
