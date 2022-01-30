@@ -207,7 +207,7 @@ namespace NodeNetworking
 
             if (State == ConnectionState.Connected)
             {
-                StartSendingAsync();
+                await StartSendingAsync();
             }
             //Send(Serializer.Serialize(message));
         }

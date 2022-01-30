@@ -43,12 +43,12 @@ namespace NodeNetworking
             OnTick += DoTick;
         }
 
-        public async Task Start()
-        {
-            StartListening();
-        }
+        public Task Start() {
+			StartListening();
+			return Task.CompletedTask;
+		}
 
-        public async void StartListening(int port = 0)
+		public async void StartListening(int port = 0)
         {
             TcpListener listener;
             lock(_listenerlock)
@@ -129,7 +129,7 @@ namespace NodeNetworking
                 message.TimesRelayed++;
                 foreach (var server in GetRandomServers(Fanout))
                 {
-                    server.Send(message.Message);
+					_ = server.Send(message.Message);
                 }
                 
                 if (message.TimesRelayed >= MaxRelayCount)
@@ -157,7 +157,7 @@ namespace NodeNetworking
                     {
                         _clientConnections[key.Key] = new TcpClientConnection(this, endpoint, _logger);
 
-                        _clientConnections[key.Key].Send(new HelloMessage { Port = CurrentEndpoint.Port, }.ToMessage());
+                        _ = _clientConnections[key.Key].Send(new HelloMessage { Port = CurrentEndpoint.Port, }.ToMessage());
                     }
                 }
                 foreach(var conn in _clientConnections.ToList())
@@ -191,7 +191,7 @@ namespace NodeNetworking
                 {
                     foreach (var conn in GetRandomServers(Fanout))
                     {
-                        conn.Send(msg.Message);
+                        _ = conn.Send(msg.Message);
                     }
                     BroadcastMessages.TryRemove(msg, out _);
                 }
@@ -227,9 +227,10 @@ namespace NodeNetworking
             }
         }
 
-        public async Task RelayMessage(Message message)
+        public Task RelayMessage(Message message)
         {
             RelayMessages[new RelayMessage { Message = message }] = null;
+            return Task.CompletedTask;
         }
 
         public async Task HandleMessage(TcpClient client, Message message)
@@ -259,7 +260,7 @@ namespace NodeNetworking
                         response.ServerIps.Add(new IPAddressSerializible(ip.Value));
                     }
 
-                    tcpClient.Send(response.ToMessage());
+                    await tcpClient.Send(response.ToMessage());
 
                     if (helloMessage.Address == null)
                     {
@@ -287,14 +288,14 @@ namespace NodeNetworking
                     var newServer = message.Deserialize<NewServer>();
                     _logger.LogDebug($"NewServer message received in {newServer.ServerKey}: {newServer.Address}:{newServer.Port}");
                     ServerIPs[newServer.ServerKey] = new IPEndPoint(new IPAddress(newServer.Address), newServer.Port);
-                    RelayMessage(message);
+                    await RelayMessage(message);
                     break;
 
                 case MessageTypes.Test:
                     var testMessage = JsonSerializer.Deserialize< TestMessage >(message.Data);
 
                     _logger.LogInformation($"Received testmessage: {testMessage.Message}");
-                    RelayMessage(message);
+                    await RelayMessage(message);
 
                     break;
 
@@ -380,18 +381,18 @@ namespace NodeNetworking
                     }
                 }
 
-                async Task<Message> ReadMessage(NetworkStream stream)
-                {
-                    try
-                    {
-                        return await Serializer.DeserializeFromStream(stream);
-                    }
-                    catch(Exception e)
-                    {
-                        _logger.LogError(e, "Error while reading Message");
-                    }
-                    return null;
-                }
+                //async Task<Message> ReadMessage(NetworkStream stream)
+                //{
+                //    try
+                //    {
+                //        return await Serializer.DeserializeFromStream(stream);
+                //    }
+                //    catch(Exception e)
+                //    {
+                //        _logger.LogError(e, "Error while reading Message");
+                //    }
+                //    return null;
+                //}
 
                 var clientEndpoint = client.Client.RemoteEndPoint;
                 while (client.Connected)
