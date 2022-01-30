@@ -1,11 +1,6 @@
 ﻿using Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace NodeRepository.Entities;
+using Core.Database;
+namespace NodeRepository.Entities
 {
     public record Node
     {
@@ -14,16 +9,27 @@ namespace NodeRepository.Entities;
             Id = Guid.NewGuid();
             Votes = votes;
             Key = new ECDsaKey();
+            Ledger = new();
+            CurrentBlock = InitBlock();
         }
 
         public Guid Id { get; init; }
         public long Votes { get; set; }
         public ECDsaKey Key { get; init; }
+        public Ledger Ledger { get; init; }
+        public Block CurrentBlock { get; set; }
 
-
-        public void SignBlock(Block block)
+        public Block InitBlock()
         {
-            block.Sign(Key);
+            //Block block = new(
+            //    merkleHash: 
+            //    );
+            throw new NotImplementedException();
+        }
+
+        public void SignBlock()
+        {
+            CurrentBlock.Sign(Key);
         }
 
         public bool VerifyBlock(Block block)
