@@ -24,7 +24,7 @@ namespace NodeNetworking.DependencyInjection
             _tcpTransport = new TcpTransport(_logger);
         }
 
-        async Task IHostedService.StartAsync(CancellationToken cancellationToken)
+        Task IHostedService.StartAsync(CancellationToken cancellationToken)
         {
             if (_options.SeedServers is not null && _options.SeedServers.Count > 0)
             {
@@ -48,11 +48,14 @@ namespace NodeNetworking.DependencyInjection
             _tcpTransport.StartListening(_options.ListenPort);
             _tcpTransport.MainLoop();
             _logger.LogDebug($"GossipProtocol started");
+
+            return Task.CompletedTask;
         }
 
-        async Task IHostedService.StopAsync(CancellationToken cancellationToken)
+        Task IHostedService.StopAsync(CancellationToken cancellationToken)
         {
             _tcpTransport.Dispose();
+            return Task.CompletedTask;
         }
     }
 }

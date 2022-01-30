@@ -1,7 +1,8 @@
 ﻿using Core;
+using Core.Database;
 using Microsoft.AspNetCore.Mvc;
+using NodeNetworking.Buffering;
 using NodeWebApi.Dtos.Transactions;
-using NodeRepository.Repositories.Transactions;
 
 
 namespace NodeWebApi.Controllers
@@ -10,26 +11,28 @@ namespace NodeWebApi.Controllers
     [Route("[controller]")]
     public class TransactionsController : ControllerBase
     {
-        private readonly ITransactionsRepository repository;
+        private readonly ILedger ledger;
+        private readonly IBuffer<Transaction> transactionBuffer;
 
-        public TransactionsController(ITransactionsRepository repository)
+        public TransactionsController(ILedger ledger, IBuffer<Transaction> transactionBuffer)
         {
-            this.repository = repository;
+            this.ledger = ledger;
+            this.transactionBuffer = transactionBuffer;
         }
 
         // GET /transactions
         [HttpGet]
         public IEnumerable<TransactionDto> GetAllTransactions()
         {
-            var transaction = repository.GetAllTransactions().Select(transaction => transaction.AsDto());
+            var transaction = ledger.GetAllTransactions().Select(transaction => transaction.AsDto());
             return transaction;
         }
 
-        // GET /transactions/{id}
-        [HttpGet("{id}")]
-        public ActionResult<TransactionDto> GetTransaction(Guid id)
+        // GET /transactions/{signature}
+        [HttpGet("{signature}")]
+        public ActionResult<TransactionDto> GetTransaction(byte[] signature)
         {
-            var transaction = repository.GetTransaction(id);
+            Transaction transaction = ledger.GetTransaction(signature);
 
             if (transaction == null)
             {
@@ -40,33 +43,13 @@ namespace NodeWebApi.Controllers
 
         // POST /transactions
         [HttpPost]
-        public ActionResult<TransactionDto> CreateTransaction(CreateTransactionDto transactionDto)
+        public ActionResult<TransactionDto> CreateTransaction(CreateTransactionDto transaction)
         {
-            Transaction transaction = new(
-                id: Guid.NewGuid(), 
-                version: transactionDto.Version,
-                creationTime: transactionDto.CreationTime, 
-                merkleHash: transactionDto.MerkleHash, 
-                input: transactionDto.Input, 
-                output: transactionDto.Output,
-                amount: transactionDto.Amount, 
-                isDelegating: transactionDto.IsDelegating, 
-                signature: transactionDto.Signature
-                );
-
-            //// Opmaak van data benodigd voor het signen
-            //byte[] data = repository.SignatureDataConvertToBytes(transaction);
-
-            //// Controleren of signature overeenkomt
-            //// Public key van verzender wordt gebruikt om te controleren of de data en de signature te verifieren
-            //ECDsaKey ecdsKey = new ECDsaKey(transaction.Input, false);
-            //if (ecdsKey.Verify(data, transaction.Signature))
-            //    repository.CreateTransaction(transaction);
-
-            if (transaction.VerifySignature())
-                repository.CreateTransaction(transaction);
-            else
+            if (transaction.VerifySignature()) {
+                transactionBuffer.Add(transaction);
+            } else { 
                 return Conflict("Signature invalid.");
+            }
 
             return CreatedAtAction(nameof(GetTransaction), new { id = transaction.Id }, transaction.AsDto());
         }
@@ -103,26 +86,7 @@ namespace NodeWebApi.Controllers
         public ActionResult<long> GetBalance(string publicKeyHex)
         {
             byte[] publicKey = Convert.FromHexString(publicKeyHex);
-            var transactions = repository.GetTransactions(publicKey);
-
-            if (transactions == null)
-            {
-                return NotFound();
-            }
-
-            long balance = 0;
-
-            var outgoing = transactions.Where(transaction => transaction.Input == publicKey);
-
-            var incoming = transactions.Where(transaction => transaction.Output == publicKey);
-
-            foreach (var transaction in outgoing)
-                balance -= transaction.Amount;
-
-            foreach (var transaction in incoming)
-                balance += transaction.Amount;
-
-            return balance;
+            return ledger.GetBalance(publicKey);
         }
 
         // GET /transactions/{publicKeyHex}
@@ -131,7 +95,7 @@ namespace NodeWebApi.Controllers
         {
             byte[] publicKey = Convert.FromHexString(publicKeyHex);
 
-            var transactions = repository.GetTransactions(publicKey).Select(transaction => transaction.AsDto());
+            var transactions = ledger.GetAllTransactions().Where(t => t.Input == publicKey).Select(transaction => transaction.AsDto());
 
             if (transactions == null)
             {
@@ -142,17 +106,17 @@ namespace NodeWebApi.Controllers
         }
 
         // DELETE /transactions/{id}
-        [HttpDelete("{id}")]
-        public ActionResult DeleteTransaction(Guid id)
+        [HttpDelete("{signature}")]
+        public ActionResult DeleteTransaction(byte[] signature)
         {
-            var existingTransaction = repository.GetTransaction(id);
+            var existingTransaction = transactionBuffer.GetAllItems().Where(x => x.Signature == signature).FirstOrDefault();
 
             if (existingTransaction == null)
             {
                 return NotFound();
             }
 
-            repository.DeleteTransaction(id);
+            transactionBuffer.Remove(existingTransaction);
 
             return NoContent();
         }
@@ -161,7 +125,13 @@ namespace NodeWebApi.Controllers
         [HttpGet("test")]
         public ActionResult<TransactionDto> GetTransactionTesting()
         {
-            return repository.GetTransactionTesting().AsDto();
+            return new TransactionDto() {
+                MerkleHash = Utility.GetEmptyByteArray(128),
+                Input = Utility.ConcatArrays(new byte[] { 0x04 }, Utility.GetEmptyByteArray(128)),
+                Output = Utility.ConcatArrays(new byte[] { 0x04 }, Utility.GetEmptyByteArray(128)),
+                Amount = 100,
+                IsDelegating = false
+            };
         }
     }
 }
