@@ -1,25 +1,21 @@
-﻿using NodeRepository.Entities;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace NodeWebApi.Dtos.Transactions
 {
-    public record UpdateTransactionDto
+    public record UpdateTransactionDto : TransactionDto
     {
         [Required]
-        public int Version { get; init; }
-        public string? Name { get; init; }
+        public new int Version { get; init; }
         [Required]
-        public byte[] MerkleHash { get; init; }
+        public new byte[]? MerkleHash { get; init; }
         [Required]
-        public byte[] Input { get; init; }
+        public new byte[]? Input { get; init; }
         [Required]
-        public long Amount { get; init; }
+        public new long Amount { get; init; }
         [Required]
-        public byte[] Output { get; init;}
+        public new byte[]? Output { get; init;}
         [Required]
-        public bool Delegate { get; init; }
-        [Required]
-        public byte[] Signature { get; init; }
+        public new byte[]? Signature { get; init; }
     }
 }
 

@@ -9,6 +9,6 @@ public class NodeContext : DbContext
     {
 
     }
-    public DbSet<Transaction> Transactions { get; set; }
+    public DbSet<Transaction> Transactions { get; set; } => Set<Transaction>();
     public DbSet<Wallet> Wallets { get; set; }
 }
