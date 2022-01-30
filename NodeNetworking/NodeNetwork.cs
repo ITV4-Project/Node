@@ -66,11 +66,7 @@ namespace NodeNetworking
                     {
                         List<Node> minDelegates = candidates.Where(n => n.Votes == minVotes).ToList();
 
-                        // TODO fix remove random.Next
-                        throw new NotImplementedException();
-
-                        candidates.Remove(minDelegates.ElementAt(random.Next(minDelegates.Count)));
-                        //delegates.RemoveWhere(n => n.StakingPoolValue == delegates.Min(n => n.StakingPoolValue));
+                        candidates.Remove(minDelegates.Last());
                         candidates.Add(node);
                     }
                 }
