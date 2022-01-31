@@ -1,8 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Core;
+using Microsoft.AspNetCore.Mvc;
 using NodeWebApi.Dtos.Transactions;
-using NodeRepository.Entities;
 using NodeRepository.Repositories.Transactions;
-using NodeWebApi.lib;
+
 
 namespace NodeWebApi.Controllers
 {
@@ -19,9 +19,9 @@ namespace NodeWebApi.Controllers
 
         // GET /transactions
         [HttpGet]
-        public IEnumerable<TransactionDto> GetTransactions()
+        public IEnumerable<TransactionDto> GetAllTransactions()
         {
-            var transaction = repository.GetTransactions().Select(transaction => transaction.AsDto());
+            var transaction = repository.GetAllTransactions().Select(transaction => transaction.AsDto());
             return transaction;
         }
 
@@ -42,61 +42,103 @@ namespace NodeWebApi.Controllers
         [HttpPost]
         public ActionResult<TransactionDto> CreateTransaction(CreateTransactionDto transactionDto)
         {
-            Transaction transaction = new()
-            {
-                Id = Guid.NewGuid(),
-                Version = transactionDto.Version,
-                CreationDate = DateTimeOffset.UtcNow,
-                Name = transactionDto.Name,
-                MerkleHash = transactionDto.MerkleHash,
-                Input = transactionDto.Input,
-                Amount = transactionDto.Amount,
-                Output = transactionDto.Output,
-                Delegate = transactionDto.Delegate,
-                Signature = transactionDto.Signature
-            };
+            Transaction transaction = new(
+                id: Guid.NewGuid(), 
+                version: transactionDto.Version,
+                creationTime: transactionDto.CreationTime, 
+                merkleHash: transactionDto.MerkleHash, 
+                input: transactionDto.Input, 
+                output: transactionDto.Output,
+                amount: transactionDto.Amount, 
+                isDelegating: transactionDto.IsDelegating, 
+                signature: transactionDto.Signature
+                );
 
+            //// Opmaak van data benodigd voor het signen
+            //byte[] data = repository.SignatureDataConvertToBytes(transaction);
 
-            // Opmaak van data benodigd voor het signen
-            byte[] data = repository.SignatureDataConvertToBytes(transaction);
+            //// Controleren of signature overeenkomt
+            //// Public key van verzender wordt gebruikt om te controleren of de data en de signature te verifieren
+            //ECDsaKey ecdsKey = new ECDsaKey(transaction.Input, false);
+            //if (ecdsKey.Verify(data, transaction.Signature))
+            //    repository.CreateTransaction(transaction);
 
-            // Controleren of signature overeenkomt
-            // Public key van verzender wordt gebruikt om te controleren of de data en de signature te verifieren
-            ECDsaKey ecdsKey = new ECDsaKey(transaction.Input, false);
-            if (ecdsKey.Verify(data, transaction.Signature))
+            if (transaction.VerifySignature())
                 repository.CreateTransaction(transaction);
             else
-                return BadRequest();
+                return Conflict("Signature invalid.");
 
             return CreatedAtAction(nameof(GetTransaction), new { id = transaction.Id }, transaction.AsDto());
         }
 
-        // PUT /transactions/{id}
-        [HttpPut("{id}")]
-        public ActionResult UpdateTransaction(Guid id, UpdateTransactionDto transactionDto)
-        {
-            var existingTransaction = repository.GetTransaction(id);
+        //// PUT /transactions/{id}
+        //[HttpPut("{id}")]
+        //public ActionResult UpdateTransaction(Guid id, UpdateTransactionDto transactionDto)
+        //{
+        //    var existingTransaction = repository.GetTransaction(id);
 
-            if (existingTransaction == null)
+        //    if (existingTransaction == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    Transaction updatedTransaction = existingTransaction with(
+        //        Guid.NewGuid(), 
+        //        transactionDto.Version, 
+        //        DateTimeOffset.UtcNow, 
+        //        transactionDto.MerkleHash, 
+        //        transactionDto.Input, 
+        //        transactionDto.Output, 
+        //        transactionDto.Amount, 
+        //        transactionDto.IsDelegating, 
+        //        transactionDto.Signature
+
+        //    repository.UpdateTransaction(updatedTransaction);
+
+        //    return NoContent();
+        //}
+
+        //GET /balance/{publicKeyHex}
+        [HttpGet("/Balance/{publicKeyHex}")]
+        public ActionResult<long> GetBalance(string publicKeyHex)
+        {
+            byte[] publicKey = Convert.FromHexString(publicKeyHex);
+            var transactions = repository.GetTransactions(publicKey);
+
+            if (transactions == null)
             {
                 return NotFound();
             }
 
-            Transaction updatedTransaction = existingTransaction with
+            long balance = 0;
+
+            var outgoing = transactions.Where(transaction => transaction.Input == publicKey);
+
+            var incoming = transactions.Where(transaction => transaction.Output == publicKey);
+
+            foreach (var transaction in outgoing)
+                balance -= transaction.Amount;
+
+            foreach (var transaction in incoming)
+                balance += transaction.Amount;
+
+            return balance;
+        }
+
+        // GET /transactions/{publicKeyHex}
+        [HttpGet("/PublicKey/{publicKeyHex}")]
+        public ActionResult<IEnumerable<TransactionDto>> GetTransactions(string publicKeyHex)
+        {
+            byte[] publicKey = Convert.FromHexString(publicKeyHex);
+
+            var transactions = repository.GetTransactions(publicKey).Select(transaction => transaction.AsDto());
+
+            if (transactions == null)
             {
-                Version = transactionDto.Version,
-                Name = transactionDto.Name,
-                MerkleHash = transactionDto.MerkleHash,
-                Input = transactionDto.Input,
-                Amount = transactionDto.Amount,
-                Output = transactionDto.Output,
-                Delegate = transactionDto.Delegate,
-                Signature = transactionDto.Signature
-            };
+                return NotFound();
+            }
+            return transactions.ToList();
 
-            repository.UpdateTransaction(updatedTransaction);
-
-            return NoContent();
         }
 
         // DELETE /transactions/{id}
@@ -113,6 +155,13 @@ namespace NodeWebApi.Controllers
             repository.DeleteTransaction(id);
 
             return NoContent();
+        }
+
+        // GET /transactions/test
+        [HttpGet("test")]
+        public ActionResult<TransactionDto> GetTransactionTesting()
+        {
+            return repository.GetTransactionTesting().AsDto();
         }
     }
 }

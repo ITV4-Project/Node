@@ -13,7 +13,7 @@ namespace NodeWebApi.Dtos.Transactions
         [Required]
         public byte[] Input { get; init; }
         [Required]
-        public int Amount { get; init; }
+        public long Amount { get; init; }
         [Required]
         public byte[] Output { get; init;}
         [Required]

@@ -1,6 +1,7 @@
 ﻿using NodeWebApi.Dtos.Transactions;
 using NodeWebApi.Dtos.Wallets;
 using NodeRepository.Entities;
+using Core;
 
 namespace NodeWebApi
 {
@@ -11,7 +12,7 @@ namespace NodeWebApi
             return new WalletDto
             {
                 Id = wallet.Id,
-                CreationDate = wallet.CreationDate,
+                CreationDate = wallet.CreationTime,
                 PublicKey = wallet.PublicKey
             };
         }
@@ -22,13 +23,12 @@ namespace NodeWebApi
             {
                 Id = transaction.Id,
                 Version = transaction.Version,
-                CreationDate = transaction.CreationDate,
-                Name = transaction.Name,
+                CreationTime = transaction.CreationTime,
                 MerkleHash = transaction.MerkleHash,
                 Input = transaction.Input,
                 Amount = transaction.Amount,
                 Output = transaction.Output,
-                Delegate = transaction.Delegate,
+                IsDelegating = transaction.IsDelegating,
                 Signature = transaction.Signature
             };
         }
