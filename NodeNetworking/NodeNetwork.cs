@@ -29,7 +29,7 @@ namespace NodeNetworking
             Node validator = GetValidator(witnesses);
             if (isVerifiedBlock(validator, witnesses))
             {
-                validator.SignBlock();
+                //validator.SignBlock();
             }
             CycleRoundDelegate(validator);
         }
@@ -99,7 +99,7 @@ namespace NodeNetworking
 
             throw new NotImplementedException();
 
-            return votes > Math.Ceiling((decimal)MAX_VALIDATORS / 2);
+            //return votes > Math.Ceiling((decimal)MAX_VALIDATORS / 2);
         }
 
         private void CycleRoundDelegate(Node blockValidator)

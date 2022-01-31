@@ -1,7 +1,7 @@
 ﻿using Core;
 using Core.Database;
 using Microsoft.AspNetCore.Mvc;
-using NodeNetworking.Buffering;
+using NodeNetworking.Data.Buffering;
 using NodeWebApi.Dtos.Transactions;
 
 
@@ -36,6 +36,17 @@ namespace NodeWebApi.Controllers
 
             if (transaction == null)
             {
+                return NotFound();
+            }
+            return transaction.AsDto();
+        }
+
+        // GET /transactions/pending/{signature}
+        [HttpGet("/pending/{signature}")]
+        public ActionResult<TransactionDto> GetPendingTransaction(byte[] signature) {
+            Transaction? transaction = transactionBuffer.GetAllItems().Where(x => x.Signature == signature).FirstOrDefault();
+
+            if (transaction == null) {
                 return NotFound();
             }
             return transaction.AsDto();
@@ -87,6 +98,15 @@ namespace NodeWebApi.Controllers
         {
             byte[] publicKey = Convert.FromHexString(publicKeyHex);
             return ledger.GetBalance(publicKey);
+        }
+
+        [HttpGet("/PendingBalance/{publicKeyHex}")]
+        public ActionResult<long> GetPendingBalance(string publicKeyHex) {
+            byte[] publicKey = Convert.FromHexString(publicKeyHex);
+            long send = transactionBuffer.GetAllItems().Where(t => t.Input == publicKey).Select(t => t.Amount).Sum();
+            long recieved = transactionBuffer.GetAllItems().Where(t => t.Output == publicKey).Select(t => t.Amount).Sum();
+
+            return recieved - send;
         }
 
         // GET /transactions/{publicKeyHex}

@@ -10,5 +10,6 @@ namespace NodeNetworking.Data.Buffering {
 		public IQueryable<T> GetAllItems();
 
 		public void Clear();
+
 	}
 }

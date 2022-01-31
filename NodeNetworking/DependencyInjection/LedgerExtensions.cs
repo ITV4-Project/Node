@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Core.Database;
 using Core;
-using NodeNetworking.Buffering;
+using NodeNetworking.Data.Buffering;
 
 namespace NodeNetworking.DependencyInjection {
 	public static class LedgerExtensions {
