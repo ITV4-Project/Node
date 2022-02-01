@@ -10,6 +10,11 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+var switchMappings = new Dictionary<string, string>() {
+    { "-p", "port" },
+};
+builder.Configuration.AddCommandLine(args, switchMappings);
+
 // Add GossipProtocolOptions from Configuration (appsettings.json)
 builder.Services.Configure<GossipProtocolOptions>(
     builder.Configuration.GetSection("GossipProtocol"));

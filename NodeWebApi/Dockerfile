@@ -9,15 +9,13 @@ FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 COPY ["NodeWebApi/NodeWebApi.csproj", "NodeWebApi/"]
 COPY ["NodeNetworking/NodeNetworking.csproj", "NodeNetworking/"]
-COPY ["NodeRepository/NodeRepository.csproj", "NodeRepository/"]
-COPY ["Node.sln", "."]
-RUN dotnet restore "Node.sln"
+RUN dotnet restore "NodeWebApi/NodeWebApi.csproj"
 COPY . .
-WORKDIR "/src"
-RUN dotnet build "Node.sln" -c Release -o /app/build
+WORKDIR "/src/NodeWebApi"
+RUN dotnet build "NodeWebApi.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "Node.sln" -c Release -o /app/publish
+RUN dotnet publish "NodeWebApi.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app

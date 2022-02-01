@@ -10,6 +10,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using System.Threading;
 
 namespace NodeNetworking
 {
@@ -36,7 +37,7 @@ namespace NodeNetworking
         private readonly ConcurrentDictionary<string, TcpClientConnection> _clientConnections = new();
         public readonly ConcurrentDictionary<string, IPEndPoint> ServerIPs = new ();
 
-        private readonly ILogger _logger;
+        private ILogger _logger;
         public TcpTransport(ILogger logger)
         {
             _logger = logger;
@@ -81,9 +82,10 @@ namespace NodeNetworking
 
         private bool mainLoopRunning = false;
         private object mainLoopLock = new();
-        public async void MainLoop()
+        public async Task MainLoop()
         {
-            lock(mainLoopLock)
+            _logger.LogInformation($"Mainloop");
+            lock (mainLoopLock)
             {
                 if (mainLoopRunning)
                 {
@@ -241,6 +243,7 @@ namespace NodeNetworking
             }
 
             receivedMessages.TryAdd(message.guid, null);
+            _logger.LogInformation($"Message: {message.Data}");
             switch (message.Type)
             {
                 case MessageTypes.Hello:
