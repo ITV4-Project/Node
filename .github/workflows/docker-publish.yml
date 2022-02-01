@@ -26,7 +26,7 @@ jobs:
         name: Build and push
         uses: docker/build-push-action@v2
         with:
-          context: "{{defaultContext}}:NodeWebApi"
+          context: .
           file: ./Dockerfile
           push: true
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/itv4projectnode:latest
